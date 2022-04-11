@@ -37,6 +37,9 @@ logs
 .DS_Store
 
 /idea-sandbox
-.gradle
 
+.gradle
 build
+
+# atomikos
+transaction-logs
