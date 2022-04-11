@@ -1,12 +1,5 @@
 dependencies {
-    implementation(project(":sharding-starter"))
 
-    implementation(Libs.springbootWeb)
-    implementation(Libs.mybatisPlus)
-    implementation(Libs.springbootJtaAtomikos)
-    implementation(Libs.springbootStarterAop)
-
-    runtimeOnly(Libs.mysql)
 }
 
 tasks.register<Copy>("copySpringBootMetadataFile") {
@@ -27,6 +20,9 @@ tasks.register<Copy>("copySpringBootMetadataFile") {
     }
 
     into("${project.buildDir}$metadataFileOutputPathSuffix")
+    project.childProjects.forEach {
+        into("${it.value.buildDir}$metadataFileOutputPathSuffix")
+    }
 }
 
 tasks.findByName("build")?.dependsOn("copySpringBootMetadataFile")

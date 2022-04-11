@@ -1,0 +1,33 @@
+server:
+  port: 10000
+
+logging:
+  level:
+    root: debug
+
+spring:
+  datasource:
+    sharding:
+      primary: sharding.sharding1
+      print-banner: true
+      sharding-group:
+        sharding:
+          datasource:
+            - key: sharding1
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://localhost:3306/sharding1?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
+              username: root
+              password: root
+              cluster: MASTER
+            - key: sharding2
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://localhost:3306/sharding2?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
+              username: root
+              password: root
+              cluster: SLAVE
+            - key: sharding3
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://localhost:3306/sharding3?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
+              username: root
+              password: root
+              cluster: SLAVE

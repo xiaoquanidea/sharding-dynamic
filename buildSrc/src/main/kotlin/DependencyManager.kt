@@ -14,7 +14,7 @@ object Libs {
     const val springbootConfigurationProcessor = "org.springframework.boot:spring-boot-configuration-processor"
     const val springbootAutoconfigureProcessor = "org.springframework.boot:spring-boot-autoconfigure-processor"
     const val springbootJtaAtomikos = "org.springframework.boot:spring-boot-starter-jta-atomikos"
-    const val springbootStarterAop = "org.springframework.boot:spring-boot-starter-jta-atomikos"
+    const val springbootStarterAop = "org.springframework.boot:spring-boot-starter-aop"
 
 
     const val springbootWeb = "org.springframework.boot:spring-boot-starter-web"

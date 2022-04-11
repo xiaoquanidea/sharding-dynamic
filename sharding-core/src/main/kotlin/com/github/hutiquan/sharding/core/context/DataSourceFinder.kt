@@ -1,5 +1,6 @@
 package com.github.hutiquan.sharding.core.context
 
+import com.github.hutiquan.sharding.core.bean.ShardingKey
 import javax.sql.DataSource
 
 /**
@@ -8,7 +9,7 @@ import javax.sql.DataSource
  */
 interface DataSourceFinder {
 
-    fun smartChooseShardingKey() : String
+    fun chooseShardingKey() : String
 
     fun findCurrentDataSource() : DataSource
 }

@@ -4,17 +4,14 @@ import com.github.hutiquan.sharding.core.ShardingProperties
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
 import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourceInterceptor
 import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourcePointcutAdvisor
-import com.github.hutiquan.sharding.core.context.DataSourceBuilder
-import com.github.hutiquan.sharding.core.context.HikariDataSourceBuilder
-import com.github.hutiquan.sharding.core.context.ShardingContext
-import com.github.hutiquan.sharding.core.context.ShardingDataSource
+import com.github.hutiquan.sharding.core.context.*
+import com.github.hutiquan.sharding.core.plugin.MybatisReadWriteAutoRoutingPlugin
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 
@@ -33,17 +30,18 @@ class ShardingAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(name = ["shardingManagedTransactionFactory"])
     fun shardingContext(
         properties: ShardingProperties,
         shardingDataSource: ShardingDataSource
     ): ShardingContext {
-        return ShardingContext(properties, shardingDataSource)
+        return DefaultShardingContext(properties, shardingDataSource)
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnMissingClass("org.springframework.boot.jta.atomikos.AtomikosDataSourceBean")
-    fun dataSourceBuilder() : DataSourceBuilder<*> {
+    fun dataSourceBuilder(): DataSourceBuilder<*> {
         return HikariDataSourceBuilder()
     }
 
@@ -61,5 +59,9 @@ class ShardingAutoConfiguration {
         advice: ShardingDatasourceInterceptor
     ) =
         ShardingDatasourcePointcutAdvisor(annoContainer, advice)
+
+    @Bean
+    fun mybatisReadWriteAutoRoutingPlugin(): MybatisReadWriteAutoRoutingPlugin =
+        MybatisReadWriteAutoRoutingPlugin()
 
 }

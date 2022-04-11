@@ -24,6 +24,10 @@ class ShardingAnnotationContainer: BeanFactoryAware, InitializingBean, BeanClass
     var shardingKeyParameterName = "value"
     val shardingAnnotationTypes: MutableSet<Class<out Annotation>> = mutableSetOf()
 
+    init {
+        shardingAnnotationTypes.add(Sharding::class.java)
+    }
+
     fun addShardingAnnotation(annoClassFullName: String) {
         Assert.notNull(annoClassFullName, "sharding annotation class 全限定路径不能为空")
         val shardingAnno = Class.forName(annoClassFullName)

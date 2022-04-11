@@ -14,29 +14,50 @@ import javax.sql.DataSource
  * @since 2022-04-08 10:31 AM
  */
 class ShardingTransaction(
-    private var dataSource: DataSource
+    private val dataSource: DataSource
 ) : SpringManagedTransaction(dataSource) {
 
     companion object {
         val log : Logger = LoggerFactory.getLogger(ShardingTransaction::class.java)
     }
 
+    /**
+     * 是否为事务连接
+     */
     private var isConnectionTransactional = false
+
+    /**
+     * 是否开启了自动提交
+     */
     private var autoCommit = false
+
+    /**
+     * 第一次打开数据源的连接
+     */
     private var connection: Connection? = null
 
+    /**
+     * 后续打开数据源连接map
+     */
     private var connectionMap: MutableMap<String, Connection> = mutableMapOf()
+
+    /**
+     * sharding上下文
+     */
     private var shardingContext: ShardingContext
+
+    /**
+     * 当前shardingKey
+     */
     private var curShardingKey: String
 
     init {
-        val shardingDataSource = dataSource as ShardingDataSource
-        shardingContext = shardingDataSource.shardingContext
-        curShardingKey = shardingContext.smartChooseShardingKey()
+        shardingContext = (dataSource as ShardingDataSource).shardingContext
+        curShardingKey = shardingContext.getDatabaseKeyOrElsePrimaryKey()
     }
 
     override fun getConnection(): Connection {
-        val shardingKey = shardingContext.smartChooseShardingKey()
+        val shardingKey = shardingContext.chooseShardingKey()
         if (shardingKey == curShardingKey) {
             return connection ?: openCurrentConnection()
         }else {

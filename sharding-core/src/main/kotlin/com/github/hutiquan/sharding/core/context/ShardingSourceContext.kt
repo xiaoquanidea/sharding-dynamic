@@ -3,18 +3,14 @@ package com.github.hutiquan.sharding.core.context
 import org.apache.ibatis.mapping.SqlCommandType
 import java.util.*
 
-typealias ArrayDeque<E> = java.util.ArrayDeque<E>
-
 object ShardingSourceContext {
 
-//    companion object {
-        /**
-         * 模拟栈FIFO,例如abc三个方法,a调用b,b调用c,传统的设置到当前线程的做法无法满足,
-         * 需要模拟栈 先进后出,后进先出
-         * a -> b -> c -> b -> a
-         */
-        val CUR_SHARDING_KEY: ThreadLocal<Deque<String>>  = ThreadLocal.withInitial { ArrayDeque() }
-//    }
+    /**
+     * 模拟栈FIFO,例如abc三个方法,a调用b,b调用c,传统的设置到当前线程的做法无法满足,
+     * 需要模拟栈 先进后出,后进先出
+     * a -> b -> c -> b -> a
+     */
+    val CUR_SHARDING_KEY: ThreadLocal<Deque<String>>  = ThreadLocal.withInitial { java.util.ArrayDeque() }
 
     /**
      * 当前数据源

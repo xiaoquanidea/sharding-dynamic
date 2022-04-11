@@ -3,7 +3,6 @@ dependencies {
 
     implementation(Libs.springbootWeb)
     implementation(Libs.mybatisPlus)
-    implementation(Libs.springbootJtaAtomikos)
     implementation(Libs.springbootStarterAop)
 
     runtimeOnly(Libs.mysql)

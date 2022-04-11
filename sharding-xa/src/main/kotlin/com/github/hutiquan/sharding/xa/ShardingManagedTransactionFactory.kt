@@ -11,9 +11,7 @@ import javax.sql.DataSource
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-08 10:35 AM
  */
-class ShardingManagedTransactionFactory(
-    private val shardingTransaction: ShardingTransaction
-) : TransactionFactory{
+class ShardingManagedTransactionFactory : TransactionFactory{
     override fun newTransaction(conn: Connection?): Transaction {
         throw ShardingException("不支持从连接创建事务")
     }

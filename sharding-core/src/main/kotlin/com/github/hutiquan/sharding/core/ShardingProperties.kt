@@ -36,8 +36,14 @@ class ShardingProperties {
 class DataSourceContainer {
 //    var mybatisReadWriteAutoRouting: Boolean = false
 
+    /**
+     * 组路由策略
+     */
     var groupRouteStrategy: Class<out ShardingDataSourceDetermineStrategy> = LoadBalanceDataSourceStrategy::class.java
 
+    /**
+     * 数据源属性
+     */
     var datasource: List<DataSourceProperty> = mutableListOf()
 }
 

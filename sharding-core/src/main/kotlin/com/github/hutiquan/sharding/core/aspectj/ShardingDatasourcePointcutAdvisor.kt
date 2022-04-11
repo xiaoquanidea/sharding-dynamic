@@ -23,13 +23,18 @@ class ShardingDatasourcePointcutAdvisor(
     private val advice: Advice,
 ) : AbstractPointcutAdvisor() {
 
+    private var pointcut: Pointcut? = null
+
 
     override fun getAdvice(): Advice {
         return advice
     }
 
     override fun getPointcut(): Pointcut {
-        return buildPointcut()
+        if (pointcut == null) {
+            pointcut = buildPointcut()
+        }
+        return this.pointcut!!
     }
 
     private fun buildPointcut(): Pointcut {
@@ -40,7 +45,9 @@ class ShardingDatasourcePointcutAdvisor(
         val shardingClassFilter = ShardingClassFilter(shardingAnnotationTypes)
 
         // 直接new,默认匹配所有方法
-        val composablePointcut: ComposablePointcut = ComposablePointcut(shardingClassFilter, shardingMethodMatcher)
+        val composablePointcut: ComposablePointcut = ComposablePointcut()
+        composablePointcut.intersection(shardingMethodMatcher) // 相交
+            .union(shardingClassFilter) // 并集
         return composablePointcut
     }
 
@@ -51,7 +58,7 @@ class ShardingDatasourcePointcutAdvisor(
 data class ShardingMethodMatcher(
     val annotationTypes: MutableSet<Class<out Annotation>>,
     val checkInherited: Boolean = true
-): StaticMethodMatcher() {
+) : StaticMethodMatcher() {
 
     override fun matches(method: Method, targetClass: Class<*>): Boolean {
         if (matchesMethod(method)) {
@@ -86,7 +93,7 @@ data class ShardingMethodMatcher(
 data class ShardingClassFilter(
     val annotationTypes: MutableSet<Class<out Annotation>>,
     val checkInherited: Boolean = true
-): ClassFilter {
+) : ClassFilter {
 
     override fun matches(clazz: Class<*>): Boolean {
         return filterClass(clazz)
@@ -111,7 +118,8 @@ fun main() {
     container.addShardingAnnotation(Sharding::class.jvmName)
     container.addShardingAnnotation(Database::class.jvmName)
     container.addShardingAnnotation(Source::class.jvmName)
-    val advisor = ShardingDatasourcePointcutAdvisor(container, ShardingDatasourceInterceptor(container))
+    val advisor =
+        ShardingDatasourcePointcutAdvisor(container, ShardingDatasourceInterceptor(container))
     val pointcut = advisor.pointcut
 
     val matches = pointcut.classFilter.matches(A::class.java)

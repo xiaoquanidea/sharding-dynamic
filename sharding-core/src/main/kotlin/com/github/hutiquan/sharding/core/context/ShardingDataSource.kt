@@ -52,13 +52,19 @@ class ShardingDataSource : AbstractRoutingDataSource(), SmartInitializingSinglet
     }
     private lateinit var beanFactory: BeanFactory
 
+    /**
+     * 实例化的真实数据源集合
+     */
     val storeDataSource : MutableMap<String, DataSource> = hashMapOf()
 
-
-
+    /**
+     * 查找选择数据源
+     */
     override fun determineTargetDataSource(): DataSource {
         return shardingContext.findCurrentDataSource()
     }
+
+
 
     override fun setBeanFactory(beanFactory: BeanFactory) {
         this.beanFactory = beanFactory
