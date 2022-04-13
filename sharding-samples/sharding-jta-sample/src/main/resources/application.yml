@@ -8,26 +8,35 @@ logging:
 spring:
   datasource:
     sharding:
-      primary: sharding.sharding1
+      primary: book
       print-banner: true
       sharding-group:
-        sharding:
+        book:
           datasource:
-            - key: sharding1
+            - key: book1
               driver-class-name: com.mysql.cj.jdbc.Driver
               url: jdbc:mysql://localhost:3306/sharding1?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
               username: root
               password: root
               cluster: MASTER
-            - key: sharding2
+            - key: book2
               driver-class-name: com.mysql.cj.jdbc.Driver
               url: jdbc:mysql://localhost:3306/sharding2?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
               username: root
               password: root
               cluster: SLAVE
-            - key: sharding3
+            - key: book3
               driver-class-name: com.mysql.cj.jdbc.Driver
               url: jdbc:mysql://localhost:3306/sharding3?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
               username: root
               password: root
               cluster: SLAVE
+
+        order:
+          datasource:
+            - key: order1
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://localhost:3306/order1?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useAffectedRows=false&useSSL=false&serverTimezone=GMT%2B8
+              username: root
+              password: root
+              cluster: MASTER

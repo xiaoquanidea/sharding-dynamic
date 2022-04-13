@@ -36,9 +36,17 @@ public class BookService {
   }
 
 
-  @Sharding("book")
+  @Sharding("book.book2")
   public List<Book> queryBook() {
     return bookMapper.selectList(null);
+  }
+
+
+  @Sharding("book")
+  public void updateBook(Book book) {
+    if (book != null) {
+      bookMapper.updateById(book);
+    }
   }
 
 }

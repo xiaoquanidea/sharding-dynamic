@@ -4,6 +4,7 @@ import com.github.hutiquan.sharding.api.ex.ShardingException
 import org.apache.ibatis.session.TransactionIsolationLevel
 import org.apache.ibatis.transaction.Transaction
 import org.apache.ibatis.transaction.TransactionFactory
+import org.mybatis.spring.transaction.SpringManagedTransactionFactory
 import java.sql.Connection
 import javax.sql.DataSource
 
@@ -11,11 +12,7 @@ import javax.sql.DataSource
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-08 10:35 AM
  */
-class ShardingManagedTransactionFactory : TransactionFactory{
-    override fun newTransaction(conn: Connection?): Transaction {
-        throw ShardingException("不支持从连接创建事务")
-    }
-
+class ShardingManagedTransactionFactory : SpringManagedTransactionFactory() {
 
     override fun newTransaction(
         dataSource: DataSource,

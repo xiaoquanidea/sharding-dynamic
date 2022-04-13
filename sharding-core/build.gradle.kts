@@ -12,7 +12,7 @@ dependencies {
 
     compileOnly(Libs.mybatisPlus)
     compileOnly(Libs.mysql)
-    compileOnly(Libs.springbootJtaAtomikos)
+//    compileOnly(Libs.springbootJtaAtomikos)
 }
 
 kapt {

@@ -5,4 +5,6 @@ dependencies {
     implementation(Libs.springbootStarter)
 
     kapt(Libs.springbootAutoconfigureProcessor)
+
+    compileOnly(Libs.mybatisPlus)
 }

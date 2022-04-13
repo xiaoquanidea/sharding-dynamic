@@ -53,7 +53,7 @@ class ShardingTransaction(
 
     init {
         shardingContext = (dataSource as ShardingDataSource).shardingContext
-        curShardingKey = shardingContext.getDatabaseKeyOrElsePrimaryKey()
+        curShardingKey = shardingContext.chooseShardingKey()
     }
 
     override fun getConnection(): Connection {

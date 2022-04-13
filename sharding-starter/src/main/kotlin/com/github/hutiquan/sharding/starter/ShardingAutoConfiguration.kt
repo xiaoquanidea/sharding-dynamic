@@ -6,6 +6,8 @@ import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourceInterceptor
 import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourcePointcutAdvisor
 import com.github.hutiquan.sharding.core.context.*
 import com.github.hutiquan.sharding.core.plugin.MybatisReadWriteAutoRoutingPlugin
+import com.github.hutiquan.sharding.starter.conditional.ConditionalOnMyBatisPlusVersion
+import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass
@@ -30,7 +32,7 @@ class ShardingAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = ["shardingManagedTransactionFactory"])
+    @ConditionalOnMissingBean(value = [ShardingContext::class], name = ["shardingManagedTransactionFactory"])
     fun shardingContext(
         properties: ShardingProperties,
         shardingDataSource: ShardingDataSource

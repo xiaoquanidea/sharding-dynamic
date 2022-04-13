@@ -2,11 +2,10 @@ package com.github.hutiquan.sharding.core.context
 
 import com.github.hutiquan.sharding.api.DatabaseCluster
 import com.github.hutiquan.sharding.api.ex.ShardingException
+import com.github.hutiquan.sharding.core.ShardingDynamicBanner
 import com.github.hutiquan.sharding.core.ShardingProperties
-import com.github.hutiquan.sharding.core.bean.ShardingGroup
-import com.github.hutiquan.sharding.core.bean.ShardingKey
+import com.github.hutiquan.sharding.core.bean.*
 import com.github.hutiquan.sharding.core.bean.ShardingKey.Companion.mapToShardingKey
-import com.github.hutiquan.sharding.core.bean.debugOutput
 import com.github.hutiquan.sharding.core.strategy.ShardingDataSourceDetermineStrategy
 import org.apache.ibatis.mapping.SqlCommandType
 import org.slf4j.Logger
@@ -47,39 +46,42 @@ abstract class ShardingContext(
     var healthShardingSources = ConcurrentHashMap<String, ShardingGroup>()
 
 
+
+
     /**
      * 获取当前数据源key，如果没有找到，则获取属性文件中配置的主数据源
      */
-    fun getDatabaseKeyOrElsePrimaryKey(): String {
-        val shardingKey = ShardingSourceContext.get()?.apply { log.debugOutput("返回数据源${this}") }
-            ?: return getDefaultMasterSharding()
-        return shardingKey
+    override fun chooseShardingKey(): String {
+        // 如果没有加@Sharding注解,此处get会为null
+        val shardingValue = ShardingSourceContext.get() ?: return getDefaultMasterSharding().apply {
+            log.debugOutput("返回默认主数据源${this}")
+        }
+        val shardingKey = mapToShardingKey(shardingValue)
+        if (shardingKey.groupIsNull()) {
+            throw ShardingException("${shardingKey.group}组数据源不存在,请重新确认配置文件")
+        }
+        val smartChooseShardingKey = smartChooseShardingKey(shardingKey)
+        log.traceOutput("返回数据源${smartChooseShardingKey}")
+        return smartChooseShardingKey
     }
 
     @kotlin.jvm.Throws(ShardingException::class)
     protected fun getDefaultMasterSharding(): String {
-        return healthShardingSources[primarySharding]?.chooseSharding(DatabaseCluster.MASTER)
+        return healthShardingSources[primarySharding]?.masters?.get(0)
             ?.run {
                 val key = primarySharding + SHARDING_KEY_SEPARATOR + this
-                log.debugOutput("返回默认主数据源${key}")
+                log.traceOutput("返回默认主数据源${key}")
                 key
             }
             ?: throw ShardingException("未找到${primarySharding}组主数据源,请重新确认配置文件")
     }
 
 
-    override fun chooseShardingKey(): String {
-        // 如果没有加@Sharding注解,此处get会为null
-        val shardingValue = ShardingSourceContext.get() ?: return getDefaultMasterSharding()
-        val shardingKey = mapToShardingKey(shardingValue)
-        return smartChooseShardingKey(shardingKey)
-    }
-
-    abstract fun smartChooseShardingKey(shardingKey: ShardingKey): String
-
     /**
      * 智能路由数据源，考虑读写分离
      */
+    abstract fun smartChooseShardingKey(shardingKey: ShardingKey): String
+
 //    override fun smartChooseShardingKey(): String {
 //        // 如果没有加@Sharding注解,此处get会为null
 //        var shardingKey = ShardingSourceContext.get() ?: return getDefaultMasterSharding()
@@ -137,11 +139,17 @@ abstract class ShardingContext(
 
 
     override fun findCurrentDataSource() : DataSource {
-        val dataSource = shardingDataSource.storeDataSource[chooseShardingKey()]
-        return dataSource!!
+        val key = chooseShardingKey()
+        val dataSource = shardingDataSource.storeDataSource[key] ?: throw ShardingException("没有找到${key}数据源")
+        log.infoOutput("返回数据源${key}")
+        return dataSource
     }
 
     override fun afterPropertiesSet() {
+        // 开始print banner
+        if (properties.printBanner) {
+            log.info(ShardingDynamicBanner.banner)
+        }
         // 加载数据源
         loadShardingDataSource()
 

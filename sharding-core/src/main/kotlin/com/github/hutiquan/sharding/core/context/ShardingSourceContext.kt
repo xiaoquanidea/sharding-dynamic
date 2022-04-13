@@ -10,7 +10,7 @@ object ShardingSourceContext {
      * 需要模拟栈 先进后出,后进先出
      * a -> b -> c -> b -> a
      */
-    val CUR_SHARDING_KEY: ThreadLocal<Deque<String>>  = ThreadLocal.withInitial { java.util.ArrayDeque() }
+    private val CUR_SHARDING_KEY: ThreadLocal<Deque<String>>  = ThreadLocal.withInitial { java.util.ArrayDeque() }
 
     /**
      * 当前数据源
@@ -20,7 +20,7 @@ object ShardingSourceContext {
     /**
      * 获取
      */
-    fun get() = CUR_SHARDING_KEY.get().peek()
+    fun get() = CUR_SHARDING_KEY.get()?.peek()
 
     /**
      * 压栈

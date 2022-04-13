@@ -8,24 +8,21 @@ import java.util.Date;
 
 /**
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
- * @since 2022-04-10 4:28 PM
+ * @since 2022-04-12 10:27 AM
  */
-@TableName("tb_book")
-public class Book implements Serializable {
+@TableName("tb_order")
+public class Order implements Serializable {
 
   @TableId(type = IdType.AUTO)
   private Integer id;
 
-  private String name;
+  private Integer bookId;
 
-  private Integer sum;
+  private Integer quantity;
 
   private Integer price;
 
   private Date createTime;
-
-  private Date updateTime;
-
 
   public Integer getId() {
     return id;
@@ -35,36 +32,20 @@ public class Book implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Integer getBookId() {
+    return bookId;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setBookId(Integer bookId) {
+    this.bookId = bookId;
   }
 
-  public Integer getSum() {
-    return sum;
+  public Integer getQuantity() {
+    return quantity;
   }
 
-  public void setSum(Integer sum) {
-    this.sum = sum;
-  }
-
-  public Date getCreateTime() {
-    return createTime;
-  }
-
-  public void setCreateTime(Date createTime) {
-    this.createTime = createTime;
-  }
-
-  public Date getUpdateTime() {
-    return updateTime;
-  }
-
-  public void setUpdateTime(Date updateTime) {
-    this.updateTime = updateTime;
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
   }
 
   public Integer getPrice() {
@@ -75,14 +56,22 @@ public class Book implements Serializable {
     this.price = price;
   }
 
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
+  }
+
   @Override
   public String toString() {
-    return "Book{" +
+    return "Order{" +
         "id=" + id +
-        ", name='" + name + '\'' +
-        ", sum=" + sum +
+        ", bookId=" + bookId +
+        ", quantity=" + quantity +
+        ", price=" + price +
         ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
         '}';
   }
 }

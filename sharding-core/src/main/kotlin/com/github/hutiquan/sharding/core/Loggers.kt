@@ -8,6 +8,16 @@ import org.slf4j.Logger
  */
 
 /**
+ * trace级别输出
+ */
+fun Logger.traceOutput(format: String, vararg arguments: Any) {
+    if (isTraceEnabled) {
+        this.trace(format, *arguments)
+    }
+}
+
+
+/**
  * debug级别输出
  */
 fun Logger.debugOutput(format: String, vararg arguments: Any) {

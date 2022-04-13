@@ -2,6 +2,7 @@ package com.github.hutiquan.sharding.samples.controller;
 
 import com.github.hutiquan.sharding.samples.entity.Book;
 import com.github.hutiquan.sharding.samples.service.BookService;
+import com.github.hutiquan.sharding.samples.service.BuyService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,16 @@ public class BookController {
       case 3: return bookService.queryBook3();
       default: return bookService.queryBook();
     }
+  }
+
+
+  @Autowired private BuyService buyService;
+
+
+  @GetMapping("/buy")
+  public String buyBook(Boolean error) {
+    buyService.buyBook(error);
+    return "ok";
   }
 
 }

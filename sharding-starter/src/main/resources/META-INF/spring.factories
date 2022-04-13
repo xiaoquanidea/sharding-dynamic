@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.github.hutiquan.sharding.starter.ShardingAutoConfiguration,\
-  com.github.hutiquan.sharding.starter.XaShardingAutoConfiguration
+  com.github.hutiquan.sharding.starter.XaShardingAutoConfiguration,\
+  com.github.hutiquan.sharding.starter.XaShardingAutoConfiguration.MybatisPlusInterposer
