@@ -1,18 +1,11 @@
 package com.github.hutiquan.sharding.core.aspectj
 
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
-import com.github.hutiquan.sharding.core.context.ShardingContext
 import com.github.hutiquan.sharding.core.context.ShardingSourceContext
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation
-import org.apache.ibatis.ognl.DynamicSubscript.first
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.AnnotatedElementUtils
-import org.springframework.core.annotation.AnnotationUtils
-import org.springframework.core.annotation.MergedAnnotation
-import java.io.Closeable
-import java.lang.reflect.AnnotatedElement
-import java.util.Objects
 
 class ShardingDatasourceInterceptor(
     private val shardingAnnoContainer: ShardingAnnotationContainer
