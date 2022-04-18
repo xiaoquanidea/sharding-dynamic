@@ -7,3 +7,8 @@ dependencies {
 
     runtimeOnly(Libs.mysql)
 }
+
+ext {
+    set("deploy.skip", "true")
+    println(project.ext.properties)
+}

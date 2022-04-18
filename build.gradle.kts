@@ -1,5 +1,6 @@
 import org.apache.maven.settings.Settings
 import org.apache.maven.settings.io.DefaultSettingsReader
+import org.apache.maven.settings.io.SettingsReader
 import org.gradle.api.internal.artifacts.mvnsettings.DefaultMavenFileLocations
 import org.gradle.api.internal.artifacts.mvnsettings.DefaultMavenSettingsProvider
 import kotlin.reflect.full.declaredMemberProperties
@@ -10,7 +11,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     kotlin("plugin.spring") version "1.6.0" // class默认是open
     kotlin("kapt") version "1.6.10"
-    `java` // 编译和测试Java源代码并将其组装成JAR文件的插件
+    java // 编译和测试Java源代码并将其组装成JAR文件的插件
     `maven-publish` // maven发布
 
     id("org.springframework.boot") version SpringBootVersion apply false // 使用spring-boot-dependencies依赖管理版本，并支持打成可执行jar
@@ -67,18 +68,21 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8 // 确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
     }
 
-    publishing {
+    val configure: (PublishingExtension).() -> Unit = {
         repositories {
 
             maven {
                 name = "hgjMaven"
                 fun DefaultMavenSettingsProvider.readLocalSettings(): Settings? {
-                    val options = mapOf(org.apache.maven.settings.io.SettingsReader.IS_STRICT to false)
+                    val options = mapOf(SettingsReader.IS_STRICT to false)
                     val settingsReader = DefaultSettingsReader()
-                    val mavenFileLocationsKP = DefaultMavenSettingsProvider::class.declaredMemberProperties.find { it.name == "mavenFileLocations" } ?: return null
+                    val mavenFileLocationsKP =
+                        DefaultMavenSettingsProvider::class.declaredMemberProperties.find { it.name == "mavenFileLocations" }
+                            ?: return null
                     mavenFileLocationsKP.isAccessible = true
                     val mavenFileLocations = mavenFileLocationsKP.get(this) as MavenFileLocations
-                    val settings = settingsReader.read(mavenFileLocations.globalSettingsFile, options)
+                    val settings =
+                        settingsReader.read(mavenFileLocations.globalSettingsFile, options)
                     return settings
                 }
 
@@ -89,7 +93,9 @@ subprojects {
                 val mavenFileLocations = DefaultMavenFileLocations()
                 val mavenSettingsProvider = DefaultMavenSettingsProvider(mavenFileLocations)
                 val settings = mavenSettingsProvider.readLocalSettings()
-                val sever = settings?.servers?.find { it.id == nexusReleases || it.id == nexusSnapshot || it.id == nexusPublic } ?: return@maven
+                val sever =
+                    settings?.servers?.find { it.id == nexusReleases || it.id == nexusSnapshot || it.id == nexusPublic }
+                        ?: return@maven
 
                 credentials {
                     username = sever.username
@@ -98,7 +104,8 @@ subprojects {
 
                 val isSnapshot = version.toString().endsWith("SNAPSHOT", true)
                 val allConfiguredRepository = settings.profiles.flatMap { it.repositories }
-                val repositoryUrl = allConfiguredRepository.find { if (isSnapshot) it.id == nexusSnapshot else it.id == nexusReleases }?.url
+                val repositoryUrl =
+                    allConfiguredRepository.find { if (isSnapshot) it.id == nexusSnapshot else it.id == nexusReleases }?.url
                 url = repositoryUrl?.let { uri(it) } ?: return@maven
                 isAllowInsecureProtocol = true
             }
@@ -145,6 +152,14 @@ subprojects {
 
         }
     }
+
+    afterEvaluate {
+        if (!project.ext.has("deploy.skip")) {
+            publishing(configure)
+        }
+        println(project.ext.properties)
+    }
+
 }
 
 

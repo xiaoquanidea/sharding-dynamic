@@ -1,7 +1,3 @@
-dependencies {
-
-}
-
 tasks.register<Copy>("copySpringBootMetadataFile") {
     dependsOn("classes")
 //    shouldRunAfter("build")
@@ -26,3 +22,7 @@ tasks.register<Copy>("copySpringBootMetadataFile") {
 }
 
 tasks.findByName("build")?.dependsOn("copySpringBootMetadataFile")
+
+ext {
+    set("deploy.skip", "true")
+}
