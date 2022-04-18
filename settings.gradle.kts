@@ -1,5 +1,17 @@
 rootProject.name = "Sharding-Dynamic"
 
+buildscript {
+    repositories {
+        maven("https://maven.aliyun.com/nexus/content/groups/public")
+        maven("https://maven.aliyun.com/nexus/content/repositories/gradle-plugin")
+        mavenCentral()
+        maven("https://plugins.gradle.org/m2/")
+    }
+    dependencies {
+        classpath("org.apache.maven:maven-core:3.8.1")
+    }
+}
+
 include("sharding-api")
 include("sharding-core")
 include("sharding-starter")
