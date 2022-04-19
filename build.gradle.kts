@@ -157,7 +157,6 @@ subprojects {
         if (!project.ext.has("deploy.skip")) {
             publishing(configure)
         }
-        println(project.ext.properties)
     }
 
 }
