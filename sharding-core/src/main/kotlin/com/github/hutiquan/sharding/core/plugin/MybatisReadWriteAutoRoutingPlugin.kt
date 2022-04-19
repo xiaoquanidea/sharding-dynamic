@@ -26,7 +26,7 @@ import java.util.function.Supplier
         args = [MappedStatement::class, Any::class]
     )
 )
-class MybatisReadWriteAutoRoutingPlugin : Interceptor {
+open class MybatisReadWriteAutoRoutingPlugin : Interceptor {
     @Throws(Throwable::class)
     override fun intercept(invocation: Invocation): Any {
         val args = invocation.args

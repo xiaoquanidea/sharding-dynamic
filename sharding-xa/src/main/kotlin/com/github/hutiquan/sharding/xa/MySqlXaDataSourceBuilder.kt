@@ -8,7 +8,7 @@ import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
 import java.util.Optional;
 import javax.sql.DataSource
 
-class MySqlXaDataSourceBuilder(
+open class MySqlXaDataSourceBuilder(
     private val xaDataSourceOpt:Optional<XaDataSourceCreator>
 ) : DataSourceBuilder<DataSource> {
     override fun build(

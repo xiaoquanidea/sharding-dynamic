@@ -1,3 +1,4 @@
+const val KotlinVersion = "1.6.10"
 const val SpringBootVersion = "2.6.6"
 const val MybatisPlusVersion = "3.5.1"
 

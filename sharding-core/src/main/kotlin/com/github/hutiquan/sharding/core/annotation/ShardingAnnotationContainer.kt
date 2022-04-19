@@ -16,7 +16,7 @@ import org.springframework.util.Assert
 import java.lang.reflect.AccessibleObject
 import java.lang.reflect.AnnotatedElement
 
-class ShardingAnnotationContainer: BeanFactoryAware, InitializingBean, BeanClassLoaderAware {
+open class ShardingAnnotationContainer: BeanFactoryAware, InitializingBean, BeanClassLoaderAware {
 
    private lateinit var beanFactory: ConfigurableListableBeanFactory
    private lateinit var classLoader: ClassLoader

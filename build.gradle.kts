@@ -8,9 +8,9 @@ import org.gradle.api.internal.artifacts.mvnsettings.MavenFileLocations
 import kotlin.reflect.jvm.isAccessible
 
 plugins {
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.spring") version "1.6.0" // class默认是open
-    kotlin("kapt") version "1.6.10"
+    kotlin("jvm") version KotlinVersion
+    kotlin("plugin.allopen") version KotlinVersion // class默认是open
+    kotlin("kapt") version KotlinVersion
     java // 编译和测试Java源代码并将其组装成JAR文件的插件
     `maven-publish` // maven发布
 
@@ -48,6 +48,10 @@ subprojects {
         plugin("io.spring.dependency-management")
         plugin("kotlin-kapt")
         plugin("maven-publish")
+        plugin("kotlin-allopen")
+    }
+    allOpen {
+        preset("spring")
     }
     dependencyManagement {
         imports {

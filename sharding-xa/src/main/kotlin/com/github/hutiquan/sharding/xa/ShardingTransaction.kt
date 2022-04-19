@@ -13,7 +13,7 @@ import javax.sql.DataSource
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-08 10:31 AM
  */
-class ShardingTransaction(
+open class ShardingTransaction(
     private val dataSource: DataSource
 ) : SpringManagedTransaction(dataSource) {
 

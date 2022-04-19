@@ -4,7 +4,7 @@ import com.github.hutiquan.sharding.core.DataSourceProperty
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 
-class HikariDataSourceBuilder : DataSourceBuilder<HikariDataSource> {
+open class HikariDataSourceBuilder : DataSourceBuilder<HikariDataSource> {
     override fun build(
         groupKey: String,
         shardingKey: String,

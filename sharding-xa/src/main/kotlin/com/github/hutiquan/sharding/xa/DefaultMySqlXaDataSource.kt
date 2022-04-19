@@ -5,7 +5,7 @@ import com.github.hutiquan.sharding.core.context.XaDataSourceCreator
 import com.mysql.cj.jdbc.MysqlXADataSource
 import javax.sql.XADataSource
 
-class DefaultMySqlXaDataSource : XaDataSourceCreator {
+open class DefaultMySqlXaDataSource : XaDataSourceCreator {
     override fun createXaDataSource(
         groupKey: String,
         shardingKey: String,

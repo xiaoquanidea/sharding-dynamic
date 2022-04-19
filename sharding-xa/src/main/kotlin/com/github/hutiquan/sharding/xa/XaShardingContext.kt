@@ -14,7 +14,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-11 5:17 PM
  */
-class XaShardingContext(
+open class XaShardingContext(
     properties: ShardingProperties,
     shardingDataSource: ShardingDataSource
 ) : ShardingContext(properties, shardingDataSource) {

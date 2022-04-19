@@ -45,7 +45,7 @@ abstract class AbstractRoutingDataSource : AbstractDataSource() {
 }
 
 
-class ShardingDataSource : AbstractRoutingDataSource(), SmartInitializingSingleton, BeanFactoryAware {
+open class ShardingDataSource : AbstractRoutingDataSource(), SmartInitializingSingleton, BeanFactoryAware {
 
     val shardingContext : ShardingContext by lazy {
         beanFactory.getBean(ShardingContext::class.java)
