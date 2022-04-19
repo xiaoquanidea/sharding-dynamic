@@ -134,7 +134,7 @@ subprojects {
                         developers {
                             developer {
                                 id.set("TiQuan Hu")
-                                name.set("hutiquan")
+                                name.set("TiQuan Hu")
                                 email.set("xiaoquanidea@163.com")
                             }
                         }
