@@ -43,6 +43,8 @@ allprojects {
 
 }
 
+tasks.jar{ enabled = false}
+
 subprojects {
     apply {
         plugin("io.spring.dependency-management")
@@ -118,6 +120,7 @@ subprojects {
                 create<MavenPublication>("hgjMaven") {
                     from(components["java"])
                     pom {
+                        artifactId = tasks.jar.orNull?.archiveBaseName?.get()
                         packaging = "jar"
                         name.set(rootProject.name)
                         description.set("Springboot整合MybatisPlus、Atomikos、多数据源读写分离")

@@ -12,6 +12,10 @@ buildscript {
     }
 }
 
+//rootProject.children.forEach {
+//    it.name = (if("sharding-starter" == it.name)  "spring-boot-starter-sharding" else it.name)
+//}
+
 include("sharding-api")
 include("sharding-core")
 include("sharding-starter")
