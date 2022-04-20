@@ -43,7 +43,7 @@ class ShardingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnMissingClass("org.springframework.boot.jta.atomikos.AtomikosDataSourceBean")
+    @ConditionalOnMissingClass("com.atomikos.jdbc.AtomikosDataSourceBean")
     fun dataSourceBuilder(): DataSourceBuilder<*> {
         return HikariDataSourceBuilder()
     }
