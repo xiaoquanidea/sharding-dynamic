@@ -20,6 +20,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.boot.autoconfigure.AutoConfigureAfter
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
@@ -34,7 +35,7 @@ import javax.sql.XADataSource
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-08 5:22 PM
  */
-@ConditionalOnClass(AtomikosDataSourceBean::class, XADataSource::class)
+@ConditionalOnClass(name = ["com.atomikos.jdbc.AtomikosDataSourceBean", "javax.sql.XADataSource"])
 @AutoConfigureBefore(ShardingAutoConfiguration::class)
 class XaShardingAutoConfiguration {
 
@@ -64,6 +65,7 @@ class XaShardingAutoConfiguration {
     }
 
 
+    @ConditionalOnBean(name = ["shardingManagedTransactionFactory"])
     @ConditionalOnMyBatisPlusVersion(value = "3.4.0", Range.OLDER_THAN)
     class MybatisPlusInterposer : BeanPostProcessor, BeanFactoryAware {
         private lateinit var beanFactory: BeanFactory
