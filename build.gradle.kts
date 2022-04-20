@@ -6,6 +6,7 @@ import org.gradle.api.internal.artifacts.mvnsettings.DefaultMavenSettingsProvide
 import kotlin.reflect.full.declaredMemberProperties
 import org.gradle.api.internal.artifacts.mvnsettings.MavenFileLocations
 import kotlin.reflect.jvm.isAccessible
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version KotlinVersion
@@ -72,6 +73,13 @@ subprojects {
         withSourcesJar()
         sourceCompatibility = JavaVersion.VERSION_1_8 // 指定编译.java文件的jdk版本
         targetCompatibility = JavaVersion.VERSION_1_8 // 确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict") // 添加-Xjsr305编译器标志来启用此功能strict
+            jvmTarget = "1.8" // Kotlin 编译器配置为生成 Java 8 字节码（默认为 Java 6）
+        }
     }
 
     val configure: (PublishingExtension).() -> Unit = {
