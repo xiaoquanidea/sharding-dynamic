@@ -1,3 +1,5 @@
+import Libs.deploySkip
+
 dependencies {
     implementation(project(":sharding-starter"))
 
@@ -8,7 +10,4 @@ dependencies {
     runtimeOnly(Libs.mysql)
 }
 
-ext {
-    set("deploy.skip", "true")
-    println(project.ext.properties)
-}
+ext.deploySkip()

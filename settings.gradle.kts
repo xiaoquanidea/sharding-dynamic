@@ -1,4 +1,4 @@
-rootProject.name = "Sharding-Dynamic"
+rootProject.name = "sharding-dynamic"
 
 buildscript {
     repositories {

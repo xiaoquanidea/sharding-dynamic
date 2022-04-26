@@ -9,13 +9,13 @@ import kotlin.reflect.jvm.isAccessible
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version KotlinVersion
-    kotlin("plugin.allopen") version KotlinVersion // class默认是open
-    kotlin("kapt") version KotlinVersion
+    kotlin("jvm") version kotlinVersion
+    kotlin("plugin.allopen") version kotlinVersion // class默认是open
+    kotlin("kapt") version kotlinVersion
     java // 编译和测试Java源代码并将其组装成JAR文件的插件
     `maven-publish` // maven发布
 
-    id("org.springframework.boot") version SpringBootVersion apply false // 使用spring-boot-dependencies依赖管理版本，并支持打成可执行jar
+    id("org.springframework.boot") version springBootVersion apply false // 使用spring-boot-dependencies依赖管理版本，并支持打成可执行jar
     id("io.spring.dependency-management") version "1.0.11.RELEASE" // 提供类似maven依赖管理功能
 
 

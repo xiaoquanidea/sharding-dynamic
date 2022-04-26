@@ -1,12 +1,14 @@
-const val KotlinVersion = "1.6.10"
-const val SpringBootVersion = "2.6.6"
-const val MybatisPlusVersion = "3.5.1"
+import org.gradle.api.plugins.ExtraPropertiesExtension
+
+const val kotlinVersion = "1.6.21"
+const val springBootVersion = "2.6.6"
+const val mybatisPlusVersion = "3.5.1"
 
 
 object Libs {
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect"
 
-    const val mybatisPlus = "com.baomidou:mybatis-plus-boot-starter:$MybatisPlusVersion"
+    const val mybatisPlus = "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
     const val mysql = "mysql:mysql-connector-java"
 
 
@@ -20,4 +22,8 @@ object Libs {
 
     const val springbootWeb = "org.springframework.boot:spring-boot-starter-web"
 
+
+    fun ExtraPropertiesExtension.deploySkip() {
+        set("deploy.skip", "true")
+    }
 }
