@@ -95,8 +95,7 @@ subprojects {
                             ?: return null
                     mavenFileLocationsKP.isAccessible = true
                     val mavenFileLocations = mavenFileLocationsKP.get(this) as MavenFileLocations
-                    val settings =
-                        settingsReader.read(mavenFileLocations.globalSettingsFile, options)
+                    val settings = settingsReader.read((mavenFileLocations.globalSettingsFile ?: return null), options)
                     return settings
                 }
 
