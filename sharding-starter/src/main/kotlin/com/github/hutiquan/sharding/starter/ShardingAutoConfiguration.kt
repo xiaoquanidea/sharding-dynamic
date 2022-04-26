@@ -2,12 +2,12 @@ package com.github.hutiquan.sharding.starter
 
 import com.github.hutiquan.sharding.core.ShardingProperties
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
+import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationInjector
 import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourceInterceptor
 import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourcePointcutAdvisor
 import com.github.hutiquan.sharding.core.context.*
 import com.github.hutiquan.sharding.core.plugin.MybatisReadWriteAutoRoutingPlugin
-import com.github.hutiquan.sharding.starter.conditional.ConditionalOnMyBatisPlusVersion
-import org.springframework.boot.autoconfigure.AutoConfigureAfter
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass
@@ -15,7 +15,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.EnableAspectJAutoProxy
 
 /**
@@ -33,7 +32,10 @@ class ShardingAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(value = [ShardingContext::class], name = ["shardingManagedTransactionFactory"])
+    @ConditionalOnMissingBean(
+        value = [ShardingContext::class],
+        name = ["shardingManagedTransactionFactory"]
+    )
     fun shardingContext(
         properties: ShardingProperties,
         shardingDataSource: ShardingDataSource
@@ -50,7 +52,8 @@ class ShardingAutoConfiguration {
 
 
     @Bean
-    fun shardingAnnotationContainer() = ShardingAnnotationContainer()
+    fun shardingAnnotationContainer(injectors: ObjectProvider<ShardingAnnotationInjector>) =
+        ShardingAnnotationContainer(injectors)
 
     @Bean
     fun shardingDatasourceInterceptor(annoContainer: ShardingAnnotationContainer) =

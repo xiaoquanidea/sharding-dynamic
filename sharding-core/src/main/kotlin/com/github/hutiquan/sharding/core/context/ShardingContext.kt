@@ -7,18 +7,14 @@ import com.github.hutiquan.sharding.core.ShardingProperties
 import com.github.hutiquan.sharding.core.bean.*
 import com.github.hutiquan.sharding.core.bean.ShardingKey.Companion.mapToShardingKey
 import com.github.hutiquan.sharding.core.strategy.ShardingDataSourceDetermineStrategy
-import org.apache.ibatis.mapping.SqlCommandType
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.*
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
-import org.springframework.boot.jta.atomikos.AtomikosProperties
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.sql.DataSource
-import kotlin.properties.ReadOnlyProperty
 
 /**
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
@@ -213,6 +209,7 @@ abstract class ShardingContext(
     }
 }
 
+/*
 fun main() {
     val a : Int? = null
     val result = a.run {
@@ -220,4 +217,4 @@ fun main() {
     } ?: throw RuntimeException("空")
 
     println("result = ${result}")
-}
+}*/

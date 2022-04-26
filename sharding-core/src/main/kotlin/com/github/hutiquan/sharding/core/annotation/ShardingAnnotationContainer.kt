@@ -1,22 +1,19 @@
 package com.github.hutiquan.sharding.core.annotation
 
-import com.github.hutiquan.sharding.api.Database
 import com.github.hutiquan.sharding.api.Sharding
-import com.github.hutiquan.sharding.api.Source
-import org.springframework.beans.factory.BeanClassLoaderAware
-import org.springframework.beans.factory.BeanFactory
-import org.springframework.beans.factory.BeanFactoryAware
-import org.springframework.beans.factory.BeanFactoryUtils
-import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.*
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.annotation.MergedAnnotation
 import org.springframework.core.annotation.MergedAnnotations
 import org.springframework.util.Assert
+import org.springframework.util.StringUtils
 import java.lang.reflect.AccessibleObject
-import java.lang.reflect.AnnotatedElement
+import kotlin.streams.toList
 
-open class ShardingAnnotationContainer: BeanFactoryAware, InitializingBean, BeanClassLoaderAware {
+open class ShardingAnnotationContainer(
+    private val injectors: ObjectProvider<ShardingAnnotationInjector>
+) : BeanFactoryAware, InitializingBean, BeanClassLoaderAware {
 
    private lateinit var beanFactory: ConfigurableListableBeanFactory
    private lateinit var classLoader: ClassLoader
@@ -76,16 +73,15 @@ open class ShardingAnnotationContainer: BeanFactoryAware, InitializingBean, Bean
     }
 
     override fun afterPropertiesSet() {
-        val beans = BeanFactoryUtils.beansOfTypeIncludingAncestors(
-            beanFactory,
-            IShardingAnnotation::class.java
-        )
-        beans.values.forEach {
-            addShardingAnnotation(it.provideAnno())
-        }
+        val injectors = injectors.stream()
+            .flatMap { it.inject().stream() }
+            .filter { StringUtils.hasLength(it) }
+            .toList()
+        injectors.forEach { addShardingAnnotation(it) }
     }
 }
 
+/*
 //@Sharding("test")
 //@Source("test")
 //@Database("test")
@@ -109,4 +105,4 @@ fun main() {
 
     MergedAnnotation.of(annotations.get(0).javaClass)
     println("from = ${from}")
-}
+}*/
