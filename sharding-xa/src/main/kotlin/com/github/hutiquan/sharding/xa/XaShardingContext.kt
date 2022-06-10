@@ -25,30 +25,32 @@ open class XaShardingContext(
             没有事务，需要判断SqlCommand，是否走从库
             并且开了事务，则读写都走主库
          */
-        if (shardingKey.onlyGroupName()) { // 说明只配置了组名,这个时候需要用路由策略选择数据源
-            val sqlCommandType = ShardingSourceContext.CUR_SQL_COMMAND_TYPE.get()
+        if (TransactionSynchronizationManager.isActualTransactionActive()) { // 如果有事务,读写都走主库
+            val shardingGroup = this.healthShardingSources[groupName]
+                ?: throw ShardingException("${TransactionSynchronizationManager.getCurrentTransactionName()}事务正处于活跃状态,没有在${groupName}中找到可用的数据源")
+            val chooseSharding = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
+            shardingKey.datasourceKey = chooseSharding
+        } else { // 无事务
 
-            if (TransactionSynchronizationManager.isActualTransactionActive()) { // 如果有事务,读写都走主库
-                val shardingGroup = this.healthShardingSources[groupName]
-                    ?: throw ShardingException("${TransactionSynchronizationManager.getCurrentTransactionName()}事务正处于活跃状态,没有在${groupName}中找到可用的数据源")
-                val chooseSharding = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-                shardingKey.datasourceKey = chooseSharding
-            } else { // 无事务
-                val shardingGroup = this.healthShardingSources[groupName]
-                    ?: throw ShardingException("没有在${groupName}中找到可用的数据源")
-
-                if (sqlCommandType == null) {
-                    shardingKey.datasourceKey = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-                }else {
-                    // 如果是读Command,则走从库
-                    val chooseSharding = when (SqlCommandType.SELECT) { // TODO 如果是事务注解加载Controller上,会提前开启数据源,明明是读请求,到这里sqlCommand还没拿到
-                            sqlCommandType -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
-                            else -> shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-                        }
-                    shardingKey.datasourceKey = chooseSharding
-                }
-
+            if(!shardingKey.onlyGroupName()) { // 说明只配置了组名,这个时候需要用路由策略选择数据源
+                return shardingKey.toString()
             }
+
+            val shardingGroup = this.healthShardingSources[groupName]
+                ?: throw ShardingException("没有在${groupName}中找到可用的数据源")
+
+            val sqlCommandType = ShardingSourceContext.CUR_SQL_COMMAND_TYPE.get()
+            if (sqlCommandType == null) {
+                shardingKey.datasourceKey = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
+            }else {
+                // 如果是读Command,则走从库
+                val chooseSharding = when (SqlCommandType.SELECT) { // TODO 如果是事务注解加载Controller上,会提前开启数据源,明明是读请求,到这里sqlCommand还没拿到
+                    sqlCommandType -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
+                    else -> shardingGroup.chooseSharding(DatabaseCluster.MASTER)
+                }
+                shardingKey.datasourceKey = chooseSharding
+            }
+
         }
 
         return shardingKey.toString()

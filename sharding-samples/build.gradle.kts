@@ -1,5 +1,17 @@
 import Libs.deploySkip
 
+subprojects {
+    dependencies {
+        implementation(project(":sharding-starter"))
+
+        implementation(Libs.springbootWeb)
+        implementation(Libs.springbootStarterAop)
+        testImplementation(Libs.springbootStarterTest)
+        runtimeOnly(Libs.mysql)
+    }
+}
+
+
 tasks.register<Copy>("copySpringBootMetadataFile") {
     dependsOn("classes")
 //    shouldRunAfter("build")

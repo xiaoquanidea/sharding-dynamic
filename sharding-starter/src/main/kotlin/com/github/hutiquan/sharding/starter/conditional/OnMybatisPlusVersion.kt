@@ -2,7 +2,6 @@ package com.github.hutiquan.sharding.starter.conditional;
 
 import com.baomidou.mybatisplus.core.MybatisPlusVersion
 import com.sun.corba.se.impl.orbutil.ORBUtility.compareVersion
-import com.sun.tools.attach.VirtualMachine
 import org.springframework.boot.autoconfigure.condition.ConditionMessage
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.ConditionContext
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.core.type.AnnotatedTypeMetadata
-import java.lang.management.ManagementFactory
 
 /**
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>

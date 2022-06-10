@@ -1,9 +1,9 @@
 server:
   port: 10000
 
-logging:
-  level:
-    root: debug
+#logging:
+#  level:
+#    root: debug
 
 spring:
   datasource:
