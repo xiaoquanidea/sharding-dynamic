@@ -1,8 +1,8 @@
 package com.github.hutiquan.sharding.xa.mongo
 
-import org.springframework.context.annotation.Bean
-import org.springframework.data.mongodb.MongoDatabaseFactory
-import org.springframework.data.mongodb.MongoTransactionManager
+//import org.springframework.context.annotation.Bean
+//import org.springframework.data.mongodb.MongoDatabaseFactory
+//import org.springframework.data.mongodb.MongoTransactionManager
 
 /**
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>

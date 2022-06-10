@@ -17,6 +17,8 @@ public class XaTransactionTest {
 
 
   @Test
+//  @Commit
+//  @Transactional
   public void testXaTransaction() throws InterruptedException {
     buyService.buyBook(false);
 

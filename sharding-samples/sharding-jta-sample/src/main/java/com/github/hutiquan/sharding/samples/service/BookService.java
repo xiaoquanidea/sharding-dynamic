@@ -36,7 +36,7 @@ public class BookService {
   }
 
 
-  @Sharding("book.book2")
+  @Sharding("book")
   public List<Book> queryBook() {
     return bookMapper.selectList(null);
   }

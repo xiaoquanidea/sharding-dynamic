@@ -17,6 +17,10 @@ class ShardingGroup(
     val slaves: MutableList<String> = mutableListOf()
 
 
+    fun chooseMasterFirst(): String {
+        return masters[0]
+    }
+
     fun chooseSharding(cluster: DatabaseCluster): String? {
         return when(cluster) {
             DatabaseCluster.MASTER -> strategy?.determineDataSource(masters)

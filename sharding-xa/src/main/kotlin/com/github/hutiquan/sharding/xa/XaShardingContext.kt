@@ -28,8 +28,8 @@ open class XaShardingContext(
         if (TransactionSynchronizationManager.isActualTransactionActive()) { // 如果有事务,读写都走主库
             val shardingGroup = this.healthShardingSources[groupName]
                 ?: throw ShardingException("${TransactionSynchronizationManager.getCurrentTransactionName()}事务正处于活跃状态,没有在${groupName}中找到可用的数据源")
-            val chooseSharding = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-            shardingKey.datasourceKey = chooseSharding
+            val masterSharding = shardingGroup.chooseMasterFirst()
+            shardingKey.datasourceKey = masterSharding
         } else { // 无事务
 
             if(!shardingKey.onlyGroupName()) { // 说明只配置了组名,这个时候需要用路由策略选择数据源

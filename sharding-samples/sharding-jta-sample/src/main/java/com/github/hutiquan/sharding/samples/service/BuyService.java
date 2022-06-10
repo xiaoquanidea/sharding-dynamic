@@ -5,7 +5,6 @@ import com.github.hutiquan.sharding.samples.entity.Order;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
@@ -17,7 +16,7 @@ public class BuyService {
   @Autowired private OrderService orderService;
 
 
-  @Transactional
+//  @Transactional
   public void buyBook(Boolean error) {
     List<Book> books = bookService.queryBook();
     if (books.isEmpty()) {

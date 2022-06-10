@@ -50,7 +50,7 @@ abstract class ShardingContext(
     override fun chooseShardingKey(): String {
         // 如果没有加@Sharding注解,此处get会为null
         val shardingValue = ShardingSourceContext.get() ?: return getDefaultMasterSharding().apply {
-            log.debugOutput("返回默认主数据源${this}")
+            log.debugOutput("没有检测到注解,返回默认主数据源${this}")
         }
         val shardingKey = mapToShardingKey(shardingValue)
         if (shardingKey.groupIsNull()) {
@@ -77,62 +77,6 @@ abstract class ShardingContext(
      * 智能路由数据源，考虑读写分离
      */
     abstract fun smartChooseShardingKey(shardingKey: ShardingKey): String
-
-//    override fun smartChooseShardingKey(): String {
-//        // 如果没有加@Sharding注解,此处get会为null
-//        var shardingKey = ShardingSourceContext.get() ?: return getDefaultMasterSharding()
-//
-//        var groupName: String = ""
-//        var dataSourceKey: String = ""
-//
-//        // 如果shardingKey中没有用.分割，则将其作为sharding组名
-//        if (shardingKey.contains(SHARDING_KEY_SEPARATOR)) {
-//            val shardingKeyArr = shardingKey.split(SHARDING_KEY_SEPARATOR)
-//            groupName = shardingKeyArr[0]
-//            dataSourceKey = shardingKeyArr[1]
-//        } else {
-//            groupName = shardingKey
-//        }
-//
-//        /*
-//            什么时候能走到这里？开启了事务，也配置了@Sharding注解
-//         */
-//        if (!xaTxEnable) {
-//            if (dataSourceKey.isBlank()) { // 只配置了组名
-//                val shardingGroup = healthShardingSources[groupName] ?: throw ShardingException("没有在${groupName}中找到可用的数据源")
-//                if (TransactionSynchronizationManager.isSynchronizationActive()) { // 如果事务管理器处于活跃状态,则取出主数据源
-//                    shardingGroup
-//                }
-//            }
-//        }
-//
-//        /*
-//            没有事务，需要判断SqlCommand，是否走从库
-//            并且开了事务，则读写都走主库
-//         */
-//        if (groupName.isNotBlank() && dataSourceKey.isBlank()) { // 说明只配置了组名,这个时候需要用路由策略选择数据源
-//            val sqlCommandType = ShardingSourceContext.CUR_SQL_COMMAND_TYPE.get()
-//            val isRead = SqlCommandType.SELECT == sqlCommandType
-//
-//            // TODO 如果是因为开事务而进的该方法，事务管理器还没来及初始化，所以明明有事务，这里却也是false================
-//            shardingKey = if (TransactionSynchronizationManager.isActualTransactionActive()) { // 如果有事务,读写都走主库
-//                val shardingGroup = this.healthShardingSources[groupName] ?: throw ShardingException("${TransactionSynchronizationManager.getCurrentTransactionName()}事务正处于活跃状态,没有在${groupName}中找到可用的数据源")
-//                val chooseSharding = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-//                groupName + SHARDING_KEY_SEPARATOR + chooseSharding
-//            }else { // 无事务
-//                val shardingGroup = this.healthShardingSources[groupName] ?: throw ShardingException("没有在${groupName}中找到可用的数据源")
-//
-//                // 如果是读Command,则走从库
-//                val chooseSharding = when { // TODO 如果是事务注解加载Controller上,会提前开启数据源,明明是读请求,到这里sqlCommand还没拿到
-//                    isRead -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
-//                    else -> shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-//                } ?: shardingGroup.chooseSharding(DatabaseCluster.MASTER)
-//                groupName + SHARDING_KEY_SEPARATOR + chooseSharding
-//            }
-//        }
-//        return shardingKey
-//    }
-
 
     override fun findCurrentDataSource() : DataSource {
         val key = chooseShardingKey()
