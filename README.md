@@ -3,7 +3,7 @@
 > Springboot整合MybatisPlus、Atomikos、多数据源读写分离
 
 ## 一、介绍
-一款动态数据源的轻量级实现，支持通过注解动态切换切换数据源，支持xa分布式事务，对MybatisPlus查询自动读写分离，封装成Spring Starter方式引入。
+一款动态数据源的轻量级实现，支持通过注解动态切换数据源，支持xa分布式事务，对MybatisPlus查询自动读写分离，封装成Spring Starter方式引入。
 
 ## 二、软件架构
 ![](doc/images/dynamicdatasource.png)

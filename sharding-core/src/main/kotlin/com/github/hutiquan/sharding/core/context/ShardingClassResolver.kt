@@ -2,7 +2,7 @@
  * @author <a href="mailto:xiaoquanidea@163.com">aiden.hu</a>
  * @since 2022-04-06 6:39 PM
  */
-package com.github.hutiquan.sharding.core.aspectj
+package com.github.hutiquan.sharding.core.context
 
 import org.aopalliance.intercept.MethodInvocation
 import java.lang.reflect.Field

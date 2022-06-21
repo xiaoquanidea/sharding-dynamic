@@ -1,6 +1,7 @@
-package com.github.hutiquan.sharding.core.aspectj
+package com.github.hutiquan.sharding.core.interceptor
 
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
+import com.github.hutiquan.sharding.core.context.ShardingClassResolver
 import com.github.hutiquan.sharding.core.context.ShardingSourceContext
 import org.aopalliance.intercept.MethodInterceptor
 import org.aopalliance.intercept.MethodInvocation

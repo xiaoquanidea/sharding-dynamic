@@ -1,4 +1,4 @@
-package com.github.hutiquan.sharding.core.aspectj
+package com.github.hutiquan.sharding.core.interceptor
 
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
 import org.aopalliance.aop.Advice

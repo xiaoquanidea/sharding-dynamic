@@ -3,8 +3,8 @@ package com.github.hutiquan.sharding.starter
 import com.github.hutiquan.sharding.core.ShardingProperties
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationContainer
 import com.github.hutiquan.sharding.core.annotation.ShardingAnnotationInjector
-import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourceInterceptor
-import com.github.hutiquan.sharding.core.aspectj.ShardingDatasourcePointcutAdvisor
+import com.github.hutiquan.sharding.core.interceptor.ShardingDatasourceInterceptor
+import com.github.hutiquan.sharding.core.interceptor.ShardingDatasourcePointcutAdvisor
 import com.github.hutiquan.sharding.core.context.*
 import com.github.hutiquan.sharding.core.plugin.MybatisReadWriteAutoRoutingPlugin
 import org.springframework.beans.factory.ObjectProvider

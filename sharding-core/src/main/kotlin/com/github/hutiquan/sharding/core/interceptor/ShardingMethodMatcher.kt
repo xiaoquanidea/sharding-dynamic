@@ -1,4 +1,4 @@
-package com.github.hutiquan.sharding.core.aspectj
+package com.github.hutiquan.sharding.core.interceptor
 
 import org.springframework.aop.support.AopUtils
 import org.springframework.aop.support.StaticMethodMatcher
