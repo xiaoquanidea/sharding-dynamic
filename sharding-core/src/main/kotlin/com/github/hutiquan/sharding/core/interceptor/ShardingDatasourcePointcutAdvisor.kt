@@ -5,6 +5,7 @@ import org.aopalliance.aop.Advice
 import org.springframework.aop.Pointcut
 import org.springframework.aop.support.AbstractPointcutAdvisor
 import org.springframework.aop.support.ComposablePointcut
+import org.springframework.aop.support.annotation.AnnotationMatchingPointcut
 
 class ShardingDatasourcePointcutAdvisor(
     private val shardingAnnotationContainer: ShardingAnnotationContainer,
@@ -29,13 +30,14 @@ class ShardingDatasourcePointcutAdvisor(
 
         val shardingAnnotationTypes = shardingAnnotationContainer.shardingAnnotationTypes
 
-        val shardingMethodMatcher = ShardingMethodMatcher(shardingAnnotationTypes)
-        val shardingClassFilter = ShardingClassFilter(shardingAnnotationTypes)
+        val mpc = ShardingAnnotationMatchingPointcut.forMethodAnnotation(shardingAnnotationTypes)
+        val cpc = ShardingAnnotationMatchingPointcut(shardingAnnotationTypes, true)
+
 
         // 直接new,默认匹配所有方法
         val composablePointcut = ComposablePointcut()
-        composablePointcut.intersection(shardingMethodMatcher) // 相交
-            .union(shardingClassFilter) // 并集
+        composablePointcut.intersection(mpc) // 相交
+            .union(cpc) // 并集
         return composablePointcut
     }
 
