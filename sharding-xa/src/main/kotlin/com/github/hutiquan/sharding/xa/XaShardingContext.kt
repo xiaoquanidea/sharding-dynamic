@@ -44,8 +44,8 @@ open class XaShardingContext(
                 shardingKey.datasourceKey = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
             }else {
                 // 如果是读Command,则走从库
-                val chooseSharding = when (SqlCommandType.SELECT) { // TODO 如果是事务注解加载Controller上,会提前开启数据源,明明是读请求,到这里sqlCommand还没拿到
-                    sqlCommandType -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
+                val chooseSharding = when (sqlCommandType) { // TODO 如果是事务注解加载Controller上,会提前开启数据源,明明是读请求,到这里sqlCommand还没拿到
+                    SqlCommandType.SELECT -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
                     else -> shardingGroup.chooseSharding(DatabaseCluster.MASTER)
                 }
                 shardingKey.datasourceKey = chooseSharding

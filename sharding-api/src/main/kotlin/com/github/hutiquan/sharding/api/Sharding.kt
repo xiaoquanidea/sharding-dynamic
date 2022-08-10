@@ -11,7 +11,3 @@ annotation class Sharding(
     val value: String = "",
 //    val strategy: KClass<out IShardingStrategy> = IShardingStrategy::class
     )
-
-
-//class IShardingStrategy
-

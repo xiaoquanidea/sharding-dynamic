@@ -36,8 +36,8 @@ open class DefaultShardingContext(
             if (sqlCommandType == null) {
                 shardingKey.datasourceKey = shardingGroup.chooseSharding(DatabaseCluster.MASTER)
             }else{
-                val chooseSharding = when (SqlCommandType.SELECT) {
-                    sqlCommandType -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
+                val chooseSharding = when (sqlCommandType) {
+                    SqlCommandType.SELECT -> shardingGroup.chooseSharding(DatabaseCluster.SLAVE)
                     else -> shardingGroup.chooseSharding(DatabaseCluster.MASTER)
                 }
                 shardingKey.datasourceKey = chooseSharding
