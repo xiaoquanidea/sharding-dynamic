@@ -27,8 +27,6 @@ open class MySqlXaDataSourceBuilder(
     atomikosDataSourceBean.borrowConnectionTimeout = property.borrowConnectionTimeout
     atomikosDataSourceBean.loginTimeout = property.loginTimeout
     atomikosDataSourceBean.maintenanceInterval = property.maintenanceInterval
-    // todo
-//    atomikosDataSourceBean.reapTimeout = property.reapTimeout
     atomikosDataSourceBean.maxIdleTime = property.maxIdleTime
     atomikosDataSourceBean.testQuery = property.testQuery
 

@@ -123,7 +123,10 @@ class DataSourceProperty : Serializable {
      */
     var maintenanceInterval = 60
 
+
+    @Deprecated("https://www.atomikos.com/Blog/ExtremeTransactions6dot0")
     /**
+     *
      * atomikos
      * 连接池在收回连接之前允许借用连接的时间（秒）
      * <br/>
