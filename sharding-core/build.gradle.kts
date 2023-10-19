@@ -1,17 +1,14 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 dependencies {
     api(project(":sharding-api"))
-    api(Libs.kotlinReflect)
+    api(libs.orgJetbrainsKotlin.kotlinReflect)
 
-    implementation(Libs.springbootStarter)
-    implementation(Libs.springbootStarterAop)
+    implementation(libs.orgSpringframeworkBoot.springBootStarter)
+    implementation(libs.orgSpringframeworkBoot.springBootStarterAop)
 
-    kapt(Libs.springbootConfigurationProcessor)
+    kapt(libs.orgSpringframeworkBoot.springBootConfigurationProcessor)
 
-    compileOnly(Libs.mybatisPlus)
-    compileOnly(Libs.mysql)
+    compileOnly(libs.comBaomidou.mybatisPlusSpringBoot3Starter)
+    compileOnly(libs.comMysql.mysqlConnectorJ)
 //    compileOnly(Libs.springbootJtaAtomikos)
 }
 

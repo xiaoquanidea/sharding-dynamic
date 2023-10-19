@@ -1,10 +1,10 @@
 package com.github.hutiquan.sharding.xa;
 
+import com.atomikos.jdbc.AtomikosDataSourceBean
 import com.github.hutiquan.sharding.core.DataSourceProperty
 import com.github.hutiquan.sharding.core.context.XaDataSourceCreator;
 import com.github.hutiquan.sharding.core.context.DataSourceBuilder;
 import com.github.hutiquan.sharding.core.context.ShardingContext.Companion.SHARDING_KEY_SEPARATOR
-import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean
 import java.util.Optional;
 import javax.sql.DataSource
 
@@ -27,7 +27,8 @@ open class MySqlXaDataSourceBuilder(
     atomikosDataSourceBean.borrowConnectionTimeout = property.borrowConnectionTimeout
     atomikosDataSourceBean.loginTimeout = property.loginTimeout
     atomikosDataSourceBean.maintenanceInterval = property.maintenanceInterval
-    atomikosDataSourceBean.reapTimeout = property.reapTimeout
+    // todo
+//    atomikosDataSourceBean.reapTimeout = property.reapTimeout
     atomikosDataSourceBean.maxIdleTime = property.maxIdleTime
     atomikosDataSourceBean.testQuery = property.testQuery
 

@@ -4,10 +4,10 @@ subprojects {
     dependencies {
         implementation(project(":sharding-starter"))
 
-        implementation(Libs.springbootWeb)
-        implementation(Libs.springbootStarterAop)
-        testImplementation(Libs.springbootStarterTest)
-        runtimeOnly(Libs.mysql)
+        implementation(rootProject.libs.orgSpringframeworkBoot.springBootStarterWeb)
+        implementation(rootProject.libs.orgSpringframeworkBoot.springBootStarterAop)
+        testImplementation(rootProject.libs.orgSpringframeworkBoot.springBootStarterTest)
+        runtimeOnly(rootProject.libs.comMysql.mysqlConnectorJ)
     }
 }
 

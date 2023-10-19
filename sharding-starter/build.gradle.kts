@@ -2,9 +2,9 @@ dependencies {
     api(project(":sharding-core"))
     api(project(":sharding-xa"))
 
-    implementation(Libs.springbootStarter)
-    kapt(Libs.springbootAutoconfigureProcessor)
-    compileOnly(Libs.mybatisPlus)
+    implementation(libs.orgSpringframeworkBoot.springBootStarter)
+//    kapt(Libs.springbootAutoconfigureProcessor)
+    compileOnly(libs.comBaomidou.mybatisPlusSpringBoot3Starter)
 }
 
 tasks.jar {

@@ -1,7 +1,7 @@
 import Libs.deploySkip
 
 dependencies {
-    implementation(Libs.mybatisPlus)
+    implementation(libs.comBaomidou.mybatisPlusSpringBoot3Starter)
 }
 
 ext.deploySkip()

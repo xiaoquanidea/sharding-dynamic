@@ -1,10 +1,10 @@
 dependencies {
 
-    implementation(Libs.springbootStarter)
-    implementation(Libs.kotlinReflect)
-    compileOnly(Libs.mybatisPlus)
-    compileOnly(Libs.mysql)
-    compileOnly(Libs.springbootJtaAtomikos)
+    implementation(libs.orgSpringframeworkBoot.springBootStarter)
+    implementation(libs.orgJetbrainsKotlin.kotlinReflect)
+    compileOnly(libs.comBaomidou.mybatisPlusSpringBoot3Starter)
+    compileOnly(libs.comMysql.mysqlConnectorJ)
+    compileOnly(libs.comAtomikos.transactionsSpringBoot3Starter)
 
 //    compileOnly(Libs.springbootMongodb)
 

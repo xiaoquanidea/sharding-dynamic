@@ -12,6 +12,10 @@ buildscript {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+}
+
 //rootProject.children.forEach {
 //    it.name = (if("sharding-starter" == it.name)  "spring-boot-starter-sharding" else it.name)
 //}

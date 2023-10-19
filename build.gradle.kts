@@ -9,29 +9,25 @@ import kotlin.reflect.jvm.isAccessible
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version kotlinVersion
-    kotlin("plugin.allopen") version kotlinVersion // class默认是open
-    kotlin("kapt") version kotlinVersion
+    kotlin("jvm") version libs.versions.kotlin
+    kotlin("plugin.allopen") version libs.versions.kotlin // class默认是open
+    kotlin("kapt") version libs.versions.kotlin
     java // 编译和测试Java源代码并将其组装成JAR文件的插件
     `maven-publish` // maven发布
 
-    id("org.springframework.boot") version springBootVersion apply false // 使用spring-boot-dependencies依赖管理版本，并支持打成可执行jar
-    id("io.spring.dependency-management") version "1.0.11.RELEASE" // 提供类似maven依赖管理功能
-
-
-
+    alias(libs.plugins.orgSpringframeworkBoot) apply false // 使用spring-boot-dependencies依赖管理版本，并支持打成可执行jar
+    alias(libs.plugins.ioSpringDependencyManagement) // 提供类似maven依赖管理功能
 }
 
 
 allprojects {
     group = "com.github.hutiquan"
-    version = "1.0-SNAPSHOT"
+    version = "2.0-SNAPSHOT"
 
     repositories {
-        maven("http://nexus.hgj.net/repository/public") {
-            isAllowInsecureProtocol = true
-        }
+        maven("http://nexus.hgj.net/repository/public") { isAllowInsecureProtocol = true }
         maven("https://maven.aliyun.com/nexus/content/groups/public")
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
         maven("https://maven.aliyun.com/nexus/content/repositories/gradle-plugin")
         mavenCentral()
         maven("https://plugins.gradle.org/m2/")
@@ -71,27 +67,29 @@ subprojects {
 
     java {
         withSourcesJar()
-        sourceCompatibility = JavaVersion.VERSION_1_8 // 指定编译.java文件的jdk版本
-        targetCompatibility = JavaVersion.VERSION_1_8 // 确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
+        sourceCompatibility = JavaVersion.VERSION_17 // 指定编译.java文件的jdk版本
+        targetCompatibility = JavaVersion.VERSION_17 // 确保.class文件与targetCompatibility所指定版本或者更新版本的java虚拟机兼容
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of("17"))
+            vendor.set(JvmVendorSpec.ORACLE)
+        }
     }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict") // 添加-Xjsr305编译器标志来启用此功能strict
-            jvmTarget = "1.8" // Kotlin 编译器配置为生成 Java 8 字节码（默认为 Java 6）
+            jvmTarget = "17" // Kotlin 编译器配置为生成 Java 8 字节码（默认为 Java 6）
         }
     }
 
     val configure: (PublishingExtension).() -> Unit = {
         repositories {
-
             maven {
                 name = "hgjMaven"
-                fun DefaultMavenSettingsProvider.readLocalSettings(): Settings? {
+                /*fun DefaultMavenSettingsProvider.readLocalSettings(): Settings? {
                     val options = mapOf(SettingsReader.IS_STRICT to false)
                     val settingsReader = DefaultSettingsReader()
-                    val mavenFileLocationsKP =
-                        DefaultMavenSettingsProvider::class.declaredMemberProperties.find { it.name == "mavenFileLocations" }
+                    val mavenFileLocationsKP = DefaultMavenSettingsProvider::class.declaredMemberProperties.find { it.name == "mavenFileLocations" }
                             ?: return null
                     mavenFileLocationsKP.isAccessible = true
                     val mavenFileLocations = mavenFileLocationsKP.get(this) as MavenFileLocations
@@ -99,13 +97,22 @@ subprojects {
                     return settings
                 }
 
+                val mavenFileLocations = DefaultMavenFileLocations()
+                val mavenSettingsProvider = DefaultMavenSettingsProvider(mavenFileLocations)
+                val settings = mavenSettingsProvider.readLocalSettings()*/
+
                 val nexusReleases = "nexus.releases"
                 val nexusSnapshot = "nexus.snapshots"
                 val nexusPublic = "nexus.public"
 
-                val mavenFileLocations = DefaultMavenFileLocations()
-                val mavenSettingsProvider = DefaultMavenSettingsProvider(mavenFileLocations)
-                val settings = mavenSettingsProvider.readLocalSettings()
+                val defaultMavenFileLocations = DefaultMavenFileLocations()
+                val userSettingsFile = defaultMavenFileLocations.userSettingsFile ?: defaultMavenFileLocations.globalSettingsFile
+                var settings: Settings? = null
+                try {
+                    settings = DefaultSettingsReader().read(userSettingsFile, mapOf(SettingsReader.IS_STRICT to false))
+                } catch (_: Exception) {
+                    //ignore
+                }
                 val sever =
                     settings?.servers?.find { it.id == nexusReleases || it.id == nexusSnapshot || it.id == nexusPublic }
                         ?: return@maven

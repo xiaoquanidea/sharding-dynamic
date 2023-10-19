@@ -1,0 +1,26 @@
+[versions]
+kotlin = "1.9.0"
+springboot = "3.1.3"
+mybatisPlus = "3.5.4-SNAPSHOT"
+atomikos = "6.0.0"
+
+[libraries]
+springbootDependencies = { module = "org.springframework.boot:spring-boot-starter-dependencies", version.ref = "springboot" }
+orgSpringframeworkBoot-springBootStarter = { module = "org.springframework.boot:spring-boot-starter" }
+orgSpringframeworkBoot-springBootConfigurationProcessor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "springboot" }
+orgSpringframeworkBoot-springBootAutoconfigureProcessor = { module = "org.springframework.boot:spring-boot-autoconfigure-processor", version.ref = "springboot" }
+orgSpringframeworkBoot-springBootStarterAop = { module = "org.springframework.boot:spring-boot-starter-aop" }
+orgSpringframeworkBoot-springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+orgSpringframeworkBoot-springBootStarterWeb = { module = "org.springframework.boot:spring-boot-starter-web" }
+orgSpringframeworkBoot-springBootStarterDataMongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
+
+orgJetbrainsKotlin-kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+comMysql-mysqlConnectorJ = { module = "com.mysql:mysql-connector-j" }
+comBaomidou-mybatisPlusSpringBoot3Starter = { module = "com.baomidou:mybatis-plus-spring-boot3-starter", version.ref = "mybatisPlus" }
+comAtomikos-transactionsSpringBoot3Starter = { module = "com.atomikos:transactions-spring-boot3-starter", version.ref = "atomikos" }
+
+[bundles]
+
+[plugins]
+ioSpringDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.3" }
+orgSpringframeworkBoot = { id = "org.springframework.boot", version.ref = "springboot" }

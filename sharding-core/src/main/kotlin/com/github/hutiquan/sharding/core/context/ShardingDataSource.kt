@@ -1,9 +1,6 @@
 package com.github.hutiquan.sharding.core.context
 
-import com.github.hutiquan.sharding.core.ShardingProperties
-import org.springframework.aop.aspectj.InstantiationModelAwarePointcutAdvisor
 import org.springframework.beans.factory.*
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.jdbc.datasource.AbstractDataSource
 import java.sql.Connection
 import java.sql.SQLException
@@ -18,9 +15,9 @@ abstract class AbstractRoutingDataSource : AbstractDataSource() {
     abstract fun determineTargetDataSource(): DataSource
 
 
-    @Suppress("UNCHECKED_CAST", "WRONG_NULLABILITY_FOR_JAVA_OVERRIDE")
+    @Suppress("UNCHECKED_CAST")
     @Throws(SQLException::class)
-    override fun <T> unwrap(iface: Class<T>): T {
+    override fun <T: Any> unwrap(iface: Class<T>): T {
         if (iface.isInstance(this)) {
             return this as T
         }
