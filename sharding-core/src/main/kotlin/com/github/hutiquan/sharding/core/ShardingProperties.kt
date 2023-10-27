@@ -105,7 +105,7 @@ class DataSourceProperty : Serializable {
     /**
      * 连接最大空闲时间（秒）
      */
-    var maxLifetime = 20_000
+    var maxLifetime = 30_000
 
     /**
      * 获取连接失败重新获等待最大时间（秒），在这个时间内如果有可用连接，将返回
@@ -139,7 +139,7 @@ class DataSourceProperty : Serializable {
     /**
      * 最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃
      */
-    var maxIdleTime = 60
+    var maxIdleTime = 60_000
 
     /**
      * 连接保活
