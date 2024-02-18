@@ -6,7 +6,5 @@ dependencies {
     compileOnly(libs.comMysql.mysqlConnectorJ)
     compileOnly(libs.comAtomikos.transactionsSpringBoot3Starter)
 
-//    compileOnly(Libs.springbootMongodb)
-
     compileOnly(project(":sharding-core"))
 }
